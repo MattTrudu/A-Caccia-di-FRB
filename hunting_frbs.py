@@ -2,6 +2,7 @@ import numpy as np
 import astropy.units as u
 from scipy.optimize import curve_fit
 #from ipywidgets import interactive, IntSlider , Layout
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
 #from IPython.display import clear_output
@@ -399,6 +400,7 @@ def play_observation(frbfile):
     dm = 0
 
     fig, (ax0, ax1) = plt.subplots(2, 1, figsize=(15, 15), gridspec_kw={'height_ratios': [1, 3]})
+    
     plt.subplots_adjust(bottom=0.35)
     ax0.margins(x=0)
 
@@ -586,5 +588,7 @@ if __name__ == '__main__':
     
     mysteryfile = make_test()
     play_observation(mysteryfile)
+    matplotlib.font_manager._rebuild()
     mysterycleanfile = rfi_zap(mysteryfile)
+    matplotlib.font_manager._rebuild()
     play_observation(mysterycleanfile)
