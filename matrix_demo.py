@@ -27,12 +27,11 @@ ax.set_title("Clicca per zappare una riga")
 fig.tight_layout()
 
 buf = io.BytesIO()
-fig.savefig(buf, format="png", bbox_inches="tight")   # niente transparent
+fig.savefig(buf, format="png", bbox_inches="tight")
 plt.close(fig)
 buf.seek(0)
 img = Image.open(buf)
 
-# una colonna per l'immagine, una per i pulsanti
 col_img, col_ctrl = st.columns([1, 1])
 
 with col_img:
@@ -43,4 +42,16 @@ with col_ctrl:
     st.write(sorted(st.session_state.zapped) or "—")
 
     if st.button("Nuova matrice"):
-        st.session_state.matrix = n_
+        st.session_state.matrix = np.random.random((10, 10))
+        st.session_state.zapped = set()
+        st.rerun()
+
+    if st.button("Reset zapping"):
+        st.session_state.zapped = set()
+        st.rerun()
+
+# ---------- click ----------
+if coords:
+    row = int(coords["y"] / img.height * mat.shape[0])
+    st.session_state.zapped.add(row)
+    st.rerun()
