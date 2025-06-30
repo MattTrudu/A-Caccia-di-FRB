@@ -2,3 +2,5 @@ numpy
 matplotlib
 scipy
 astropy
+streamlit 
+streamlit-image-coordinates 
