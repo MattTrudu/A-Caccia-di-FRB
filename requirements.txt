@@ -1,7 +1,4 @@
-voila
-ipympl          # backend Matplotlib interattivo
-ipywidgets>=8
 numpy
 scipy
 astropy
-matplotlib
+dash 
