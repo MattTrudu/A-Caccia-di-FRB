@@ -13,42 +13,41 @@ if "matrix" not in st.session_state:
 if "zapped" not in st.session_state:
     st.session_state.zapped = set()
 
+# prepara la matrice da disegnare
 mat = st.session_state.matrix.copy()
 for r in st.session_state.zapped:
     mat[r, :] = np.nan
 
-# ----------- crea la figura -------------
-fig, ax = plt.subplots(figsize=(5, 4))
+# ---------------- figura ----------------
+fig, ax = plt.subplots(figsize=(4, 4))
 ax.imshow(mat, aspect="auto", origin="upper")
 ax.set_xlabel("Colonna")
 ax.set_ylabel("Riga")
 ax.set_title("Clicca per zappare una riga")
 
-# ---- convertila in PNG in memoria ------
 buf = io.BytesIO()
 fig.savefig(buf, format="png", bbox_inches="tight")
-plt.close(fig)                # evita doppio output in Streamlit
+plt.close(fig)
 buf.seek(0)
 img = Image.open(buf)
 
-# --------------- UI ---------------------
+# il componente **mostra** l'immagine e restituisce le coordinate del click
 coords = streamlit_image_coordinates(img, key="click")
-st.image(img)
 
-# ---------- gestisci il click ----------
+# ---------------- click -----------------
 if coords is not None:
     row = int(coords["y"] / img.height * mat.shape[0])
     st.session_state.zapped.add(row)
-    st.experimental_rerun()
+    st.rerun()                              # nuovo API
 
-# ----------- pulsanti utili -------------
+# ---------------- sidebar / pulsanti ----
 st.write("Righe zappate:", sorted(st.session_state.zapped) or "—")
 col1, col2 = st.columns(2)
 if col1.button("Nuova matrice"):
     st.session_state.matrix = np.random.random((10, 10))
     st.session_state.zapped = set()
-    st.experimental_rerun()
+    st.rerun()
 
 if col2.button("Reset zapping"):
     st.session_state.zapped = set()
-    st.experimental_rerun()
+    st.rerun()
