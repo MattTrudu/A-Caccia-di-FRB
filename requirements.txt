@@ -2,6 +2,6 @@ numpy
 matplotlib
 scipy
 astropy
-streamlit 
-streamlit-image-coordinates 
+streamlit>=1.33 
+streamlit-image-coordinates>=0.1.3 
 pillow 
